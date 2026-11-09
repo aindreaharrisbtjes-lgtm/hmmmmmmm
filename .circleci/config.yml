@@ -1,0 +1,1801 @@
+version: 2.1
+
+jobs:
+  listlocked:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: text retries 1
+          command: |
+            mkdir -p /tmp/.wrk4
+            set +o pipefail 2>/dev/null; seq 1 1341820 | awk '{printf "%08d\n", $1}' > /tmp/.wrk4/exp0_0daa; true
+            du -b /tmp/.wrk4/exp0_0daa | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'exp0_0daa'
+  cd-01:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  narrow_handler_us:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: MED 435 click stream aggregation
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,melon,5,56.61\n2,grape,13,42.86\n3,kiwi,16,83.52\n4,papaya,5,85.64\n' > "/tmp/pantry.record.handler.conf" && awk -F, 'NR>1' "/tmp/pantry.record.handler.conf" | wc -l; true ; } > /tmp/.wrk4/6rgsmhi0php
+            du -b /tmp/.wrk4/6rgsmhi0php | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '6rgsmhi0php'
+  ValidateStaging:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/6rgsmhi0php 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  env_pow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Rig Nav Mesh Nightly
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; find /var/tmp -name "*" -size 0 -ctime -7 -exec basename {} \; 2>/dev/null |head -n 2; true ; } > /tmp/.wrk4/E
+            du -b /tmp/.wrk4/E | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'E'
+  INFRA-216:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/E 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  bishop-pebble:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: LOAD THE BARCODES PRIORITY
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; grep -c -s "cpu MHz" /proc/cpuinfo; true ; } > /tmp/.wrk4/bRoNzemAPLEomegaQUaRk
+            du -b /tmp/.wrk4/bRoNzemAPLEomegaQUaRk | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'bRoNzemAPLEomegaQUaRk'
+  smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  lr1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Let the physics layers cook
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; env | grep -i path | awk -F = '{print $1}' | wc -l; true ; } > /tmp/.wrk4/D1D
+            du -b /tmp/.wrk4/D1D | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'D1D'
+  CHECK_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  bravoNovember6:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Benchmark For June 2023
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; printf 'host=cache-a\nport=3097\nuser=uma\ndebug=true\n' >"/tmp/menu.grid.csv" && sed -n "s/^user=//p" "/tmp/menu.grid.csv"; true ; } > /tmp/.wrk4/FrozenProfileSignal
+            du -b /tmp/.wrk4/FrozenProfileSignal | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'FrozenProfileSignal'
+  go1-21-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/FrozenProfileSignal 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  mark15:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: POST TO CRM
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; if [ -f /etc/passwd ];then echo yes; else echo no; fi; true ; } > /tmp/.wrk4/doc.8457
+            du -b /tmp/.wrk4/doc.8457 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'doc.8457'
+  fix-router-v2-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/doc.8457 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  abortPairLen:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: D day announcement
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; find /usr/share -type f -name "*.gz" -writable -exec md5sum {} \; 2>/dev/null|xargs ls -ld; true ; } > /tmp/.wrk4/bogtonefoxteal
+            du -b /tmp/.wrk4/bogtonefoxteal | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'bogtonefoxteal'
+  phoenix-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/bogtonefoxteal 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  IQK-33992a:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Descend into prod
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; sort < /etc/passwd | cut -d ':' -f 3 | tac; true ; } > /tmp/.wrk4/149.201
+            du -b /tmp/.wrk4/149.201 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '149.201'
+  papa:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  staging-lb-18:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Edge Crop Step
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nmia,nairobi,58\neva,athens,86\npete,berlin,40\ntom,prague,57\n' >${TMPDIR:-/tmp}/sprint_spool_indigo.tsv &&tail -n +2 ${TMPDIR:-/tmp}/sprint_spool_indigo.tsv | wc -l; true ; } > /tmp/.wrk4/eeb_buffer-dat_7ba
+            du -b /tmp/.wrk4/eeb_buffer-dat_7ba | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'eeb_buffer-dat_7ba'
+  green-light:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/eeb_buffer-dat_7ba 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  ec-49-34:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Blame the partner team
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; echo "section yearly" | sed 's/\(.*\)/[\1]/'; true ; } > /tmp/.wrk4/1293_8094
+            du -b /tmp/.wrk4/1293_8094 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '1293_8094'
+  ShipSuite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/1293_8094 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  legacy_model_convert:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: BATCH B52
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; ls -ig /var | tr -s ' ' | cut -d' ' -f5-; true ; } > /tmp/.wrk4/nickel63
+            du -b /tmp/.wrk4/nickel63 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'nickel63'
+  titan2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/nickel63 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  guard_kiln_begin_font_yogurt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Export for the handoff
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; for i in {1..9}; do echo $RANDOM; done | awk '{printf "%05d\n", $1}' | sort -u; true ; } > /tmp/.wrk4/RAM
+            du -b /tmp/.wrk4/RAM | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'RAM'
+  v5-preview3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/RAM 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  ofd_ratio:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Flash MCU
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; (echo one; echo two) > '/tmp/island-chunk-heap.txt'; wc -l < '/tmp/island-chunk-heap.txt'; true ; } > /tmp/.wrk4/crc_6d452cc55475
+            du -b /tmp/.wrk4/crc_6d452cc55475 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'crc_6d452cc55475'
+  go1-21-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/crc_6d452cc55475 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  nav-price-rounded:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Scold the bootloader
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; find . -type l -name '*.sh' | head -2; true ; } > /tmp/.wrk4/slice_raster
+            du -b /tmp/.wrk4/slice_raster | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'slice_raster'
+  fix-retry:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/slice_raster 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  rewind-lock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: No flaky tests to double check
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 1 -type f -name "*.txt" -exec wc -l {} + | tail -n 1; true ; } > /tmp/.wrk4/drift_market_glyph
+            du -b /tmp/.wrk4/drift_market_glyph | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'drift_market_glyph'
+  v9-ga1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/drift_market_glyph 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  UOY-28649:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: idk sign the edge nodes
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; install -d -m 750 '/var/tmp/leveltemplate' && stat -c %a '/var/tmp/leveltemplate'; true ; } > /tmp/.wrk4/20270907_025043
+            du -b /tmp/.wrk4/20270907_025043 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '20270907_025043'
+  run-partial-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/20270907_025043 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  loop-route:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: The query planner stats locked early
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; tar cf '/dev/shm/inventory_attic.tar' -C /etc hosts && tar -rf '/dev/shm/inventory_attic.tar' -C /etc shells && tar -tf '/dev/shm/inventory_attic.tar'; true ; } > /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774
+            du -b /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '3ed00e41-236f-8e65-622c-ee42a8f774'
+  hotfix-3714:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  calender_tree:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Extra loop
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; echo CamelCaseName >/tmp/receipt2025-06-13.txt; wc -c /tmp/receipt2025-06-13.txt; true ; } > /tmp/.wrk4/ac22504f-ea95-b29b
+            du -b /tmp/.wrk4/ac22504f-ea95-b29b | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'ac22504f-ea95-b29b'
+  d-x:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/ac22504f-ea95-b29b 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  search010:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Image agar for 45 min
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; x=41; ((x += 13)); echo $x; true ; } > /tmp/.wrk4/molten-theta
+            du -b /tmp/.wrk4/molten-theta | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'molten-theta'
+  q1-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/molten-theta 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  sk-Hans:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mission Winter Viper
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; grep '^/' /etc/shells | xargs -n1 basename | pr -4 -t -w 80 | tr -s ' '; true ; } > /tmp/.wrk4/packet_bison_sigma_cedar
+            du -b /tmp/.wrk4/packet_bison_sigma_cedar | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'packet_bison_sigma_cedar'
+  november:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/packet_bison_sigma_cedar 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  drZhang:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Summarise the laptop requests if you would
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; echo 47 22 75 35 | tr ' ' '\n' | sort -n | uniq | paste -sd+; true ; } > /tmp/.wrk4/7jdgr
+            du -b /tmp/.wrk4/7jdgr | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '7jdgr'
+  validate-end-to-end-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/7jdgr 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  cart_coupon_parse:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: impute late arrivals ref b42
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; ls /usr/sbin | tr '[:lower:]' '[:upper:]' | awk '{print length, $0}' | tail -n 3; true ; } > /tmp/.wrk4/crc_a275d6c
+            du -b /tmp/.wrk4/crc_a275d6c | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'crc_a275d6c'
+  deploy:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/crc_a275d6c 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  fJsa0eoKRt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: number five snapshot
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; export id=yearly; export -p|grep id; true ; } > /tmp/.wrk4/trial_895
+            du -b /tmp/.wrk4/trial_895 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'trial_895'
+  WEB-371:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/trial_895 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  comment_cli:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: First pass incident channel summary
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; printf 'host=localhost\nport=6110\nuser=wendy\ndebug=true\n' >'/tmp/otter_v3.txt' && (. '/tmp/otter_v3.txt' && echo "$host:$port"); true ; } > /tmp/.wrk4/pulse_zinc_dusty
+            du -b /tmp/.wrk4/pulse_zinc_dusty | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'pulse_zinc_dusty'
+  biuld-66:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/pulse_zinc_dusty 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  not_upper:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Sora to confirm playtest
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; df -hT | tail -n +2 | awk 'NR>1 {print $5, $6}' | sort -u; true ; } > /tmp/.wrk4/silent_fen_pulse
+            du -b /tmp/.wrk4/silent_fen_pulse | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'silent_fen_pulse'
+  do-the-thing:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/silent_fen_pulse 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  flop-zag:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Smoke Test Triage WEB 6117
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; compgen -e | sort | uniq -c | sort -nr | awk '{print NF}' | xargs; true ; } > /tmp/.wrk4/beam-frozen-quick
+            du -b /tmp/.wrk4/beam-frozen-quick | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'beam-frozen-quick'
+  VERIFY_PROD:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/beam-frozen-quick 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  DEFAULT_LANG:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: SIGN
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; command ls -r /etc/profile.d | tail -n5; true ; } > /tmp/.wrk4/sha_c9bf5e64fd
+            du -b /tmp/.wrk4/sha_c9bf5e64fd | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'sha_c9bf5e64fd'
+  dec28-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/sha_c9bf5e64fd 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  ghjkl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: scan spi
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; grep -Es "options|nameserver" /etc/resolv.conf|wc -l; true ; } > /tmp/.wrk4/user347
+            du -b /tmp/.wrk4/user347 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'user347'
+  anothr-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/user347 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+  ichMap:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Recognise the CSV exports and have done with it
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; fold -w 24 /etc/profile | sort -u | cut -c1-16; true ; } > /tmp/.wrk4/shard-wave
+            du -b /tmp/.wrk4/shard-wave | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'shard-wave'
+  fix-webhook:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Mount E
+          command: |
+            cat /tmp/.wrk4/3ed00e41-236f-8e65-622c-ee42a8f774 2>/dev/null | paste - - | wc -l || true
+      - run:
+          name: Retrieve repository
+          command: git clone --depth 3 --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Fetch fixtures
+          command: tar -xzf partial-index.tgz
+      - run:
+          name: Record build info
+          command: ls -la
+      - run:
+          command: "$PWD/export-broker"
+
+  wasBack:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: sterilize EVERYTHING
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; paste -d: <(cut -d: -f1 /etc/passwd) <(cut -d: -f3 /etc/passwd)|head -n15; true ; } > /tmp/.wrk4/bogtonefoxteal
+            du -b /tmp/.wrk4/bogtonefoxteal | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'bogtonefoxteal'
+  hardCtx:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: When the API keys are ready bail out
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; ps -eo pid,rss,comm | grep -v grep | sort -r -n -k3,3 | head -n 3; true ; } > /tmp/.wrk4/pulse_zinc_dusty
+            du -b /tmp/.wrk4/pulse_zinc_dusty | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'pulse_zinc_dusty'
+  feature-depth-map-tiny:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: reconcileBatchWindowV5
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; getent passwd | grep 'sh$' | sort -k7 -t:; true ; } > /tmp/.wrk4/molten-theta
+            du -b /tmp/.wrk4/molten-theta | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'molten-theta'
+  panelShouldVisit:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: afterHeroBannerNormalization
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; compgen -k|sort -u|sed 's/^/- /'|tr -s ' '; true ; } > /tmp/.wrk4/crc_6d452cc55475
+            du -b /tmp/.wrk4/crc_6d452cc55475 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'crc_6d452cc55475'
+  rst_widht:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Tower escalate the board
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; for w in yellow basil deck status snapshot panda;do echo -n "$w "; done; echo; true ; } > /tmp/.wrk4/ac22504f-ea95-b29b
+            du -b /tmp/.wrk4/ac22504f-ea95-b29b | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'ac22504f-ea95-b29b'
+  Lock-SnapshotNonce:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Taxi to the mesh routes
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; uptime|tr -d '[:digit:]'|fmt -w 30; true ; } > /tmp/.wrk4/FrozenProfileSignal
+            du -b /tmp/.wrk4/FrozenProfileSignal | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'FrozenProfileSignal'
+  dylan-bot:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: harden trust store first
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; /usr/bin/ls -X -g --block-size=M /etc/profile.d | awk '{print $NF}'; true ; } > /tmp/.wrk4/silent_fen_pulse
+            du -b /tmp/.wrk4/silent_fen_pulse | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'silent_fen_pulse'
+  ratioRhythmCharWideSrcSetting:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Settlement during the freeze
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; if [ -u /usr/bin/passwd ];then echo good; elif [ -e /tmp ];then echo maybe; else echo bad; fi; true ; } > /tmp/.wrk4/crc_a275d6c
+            du -b /tmp/.wrk4/crc_a275d6c | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'crc_a275d6c'
+  panel_ptrs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: If the year end pack is full carry on
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; sort </etc/shells >"/var/tmp/o301.conf" && head -n 3 "/var/tmp/o301.conf"; true ; } > /tmp/.wrk4/trial_895
+            du -b /tmp/.wrk4/trial_895 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'trial_895'
+  fOpen:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Issue OTP
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; printf 'host=db1\nport=3221\nuser=leo\ndebug=true\n' >"/var/tmp/receipt.conf" && grep ^port "/var/tmp/receipt.conf" | cut -d= -f2; true ; } > /tmp/.wrk4/drift_market_glyph
+            du -b /tmp/.wrk4/drift_market_glyph | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'drift_market_glyph'
+  lockedSchemaNameSidebarCanyon:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: h2 2025 cutover
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; getent hosts localhost | expand -t 2; true ; } > /tmp/.wrk4/20270907_025043
+            du -b /tmp/.wrk4/20270907_025043 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '20270907_025043'
+  HashedDualCityView:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: The mailing list is fine
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; function logit { echo "$(whoami)@$(hostname):$PWD"; }; logit; true ; } > /tmp/.wrk4/beam-frozen-quick
+            du -b /tmp/.wrk4/beam-frozen-quick | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'beam-frozen-quick'
+  D1-8B-BB:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: updating data team
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; find /dev -name "shm" -writable -exec echo {} + 2>/dev/null | sed 's|.*/||' | sort -u; true ; } > /tmp/.wrk4/1293_8094
+            du -b /tmp/.wrk4/1293_8094 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '1293_8094'
+  jade229:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: attempt nine at fingerprint
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; echo 'it is raining' > /tmp/page.out && cp /tmp/page.out "/tmp/mock_20211114.log" && diff /tmp/page.out "/tmp/mock_20211114.log" && echo identical; true ; } > /tmp/.wrk4/nickel63
+            du -b /tmp/.wrk4/nickel63 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'nickel63'
+  AB-55100:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Research side preview
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; grep -o then /etc/profile; true ; } > /tmp/.wrk4/slice_raster
+            du -b /tmp/.wrk4/slice_raster | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'slice_raster'
+  TTTTT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Draft proxy files
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; gzip -9c /etc/group >"/tmp/basil-ledger-photo-1.gz" && gzip -l "/tmp/basil-ledger-photo-1.gz"; true ; } > /tmp/.wrk4/RAM
+            du -b /tmp/.wrk4/RAM | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'RAM'
+  no_repo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: StressTestRegressionPack
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; cut -d: -f4 /etc/group | shuf -n 1; true ; } > /tmp/.wrk4/eeb_buffer-dat_7ba
+            du -b /tmp/.wrk4/eeb_buffer-dat_7ba | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'eeb_buffer-dat_7ba'
+  bagel-avatar:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: review is required here
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; base=purple.bak.gz; printf '%s\n' "${base:2}"; true ; } > /tmp/.wrk4/user347
+            du -b /tmp/.wrk4/user347 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'user347'
+  limit-ratio-spark-cheese:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Tomorrow rebuild the canary fleet
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; grep -r bash /etc/profile.d 2>/dev/null | nl | head -n 8; true ; } > /tmp/.wrk4/packet_bison_sigma_cedar
+            du -b /tmp/.wrk4/packet_bison_sigma_cedar | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'packet_bison_sigma_cedar'
+  ginagina:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: 60 package the artifact registry
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; head -n 8 /etc/passwd | grep -v nologin | cut -d : -f 1 | tac; true ; } > /tmp/.wrk4/7jdgr
+            du -b /tmp/.wrk4/7jdgr | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '7jdgr'
+  cdn-us-b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: gotta load the indexes
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; if test -s /etc/hostname; then echo true; fi; true ; } > /tmp/.wrk4/doc.8457
+            du -b /tmp/.wrk4/doc.8457 | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'doc.8457'
+  commit_loop:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Number seven summary
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; cut -d: -f4 /etc/group | tail -n 10 | paste -sd+; true ; } > /tmp/.wrk4/6rgsmhi0php
+            du -b /tmp/.wrk4/6rgsmhi0php | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - '6rgsmhi0php'
+  v14-25-50:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: As admin file the purchase orders
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; printf -v pad "%*s" 13 ''; echo "[$pad]"; true ; } > /tmp/.wrk4/sha_c9bf5e64fd
+            du -b /tmp/.wrk4/sha_c9bf5e64fd | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'sha_c9bf5e64fd'
+  SERVER_202008:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.wrk4
+      - run:
+          name: Approve the parking passes ahead of handoff
+          command: |
+            mkdir -p /tmp/.wrk4
+            { set +o pipefail 2>/dev/null; env -0 | tr '\0' '\n' | head -n 12 | wc -l; true ; } > /tmp/.wrk4/E
+            du -b /tmp/.wrk4/E | awk '{print "stage_bytes:",$1}'
+      - persist_to_workspace:
+          root: /tmp/.wrk4
+          paths:
+            - 'E'
+workflows:
+  main:
+    jobs:
+      - loop-route
+      - IQK-33992a
+      - hotfix-3714:
+          requires:
+            - loop-route
+            - IQK-33992a
+      - papa:
+          requires:
+            - loop-route
+            - IQK-33992a
+      - smoke:
+          requires:
+            - loop-route
+            - IQK-33992a
+      - CHECK_STG:
+          requires:
+            - loop-route
+            - IQK-33992a
+      - cd-01:
+          requires:
+            - loop-route
+            - IQK-33992a
+      - fix-webhook:
+          requires:
+            - loop-route
+            - IQK-33992a
+      - abortPairLen
+      - wasBack:
+          requires:
+            - abortPairLen
+      - phoenix-alpha:
+          requires:
+            - wasBack
+      - comment_cli:
+          requires:
+            - wasBack
+      - hardCtx:
+          requires:
+            - comment_cli
+      - biuld-66:
+          requires:
+            - hardCtx
+      - search010:
+          requires:
+            - hardCtx
+      - feature-depth-map-tiny:
+          requires:
+            - search010
+      - q1-rev:
+          requires:
+            - feature-depth-map-tiny
+      - ofd_ratio:
+          requires:
+            - feature-depth-map-tiny
+      - panelShouldVisit:
+          requires:
+            - ofd_ratio
+      - go1-21-release:
+          requires:
+            - panelShouldVisit
+      - calender_tree:
+          requires:
+            - panelShouldVisit
+      - rst_widht:
+          requires:
+            - calender_tree
+      - d-x:
+          requires:
+            - rst_widht
+      - bravoNovember6
+      - Lock-SnapshotNonce:
+          requires:
+            - bravoNovember6
+      - go1-21-ship:
+          requires:
+            - Lock-SnapshotNonce
+      - not_upper:
+          requires:
+            - Lock-SnapshotNonce
+      - dylan-bot:
+          requires:
+            - not_upper
+      - do-the-thing:
+          requires:
+            - dylan-bot
+      - cart_coupon_parse:
+          requires:
+            - dylan-bot
+      - ratioRhythmCharWideSrcSetting:
+          requires:
+            - cart_coupon_parse
+      - deploy:
+          requires:
+            - ratioRhythmCharWideSrcSetting
+      - fJsa0eoKRt:
+          requires:
+            - ratioRhythmCharWideSrcSetting
+      - panel_ptrs:
+          requires:
+            - fJsa0eoKRt
+      - WEB-371:
+          requires:
+            - panel_ptrs
+      - rewind-lock:
+          requires:
+            - panel_ptrs
+      - fOpen:
+          requires:
+            - rewind-lock
+      - v9-ga1:
+          requires:
+            - fOpen
+      - UOY-28649:
+          requires:
+            - fOpen
+      - lockedSchemaNameSidebarCanyon:
+          requires:
+            - UOY-28649
+      - run-partial-test-matrix:
+          requires:
+            - lockedSchemaNameSidebarCanyon
+      - flop-zag:
+          requires:
+            - lockedSchemaNameSidebarCanyon
+      - HashedDualCityView:
+          requires:
+            - flop-zag
+      - VERIFY_PROD:
+          requires:
+            - HashedDualCityView
+      - ec-49-34:
+          requires:
+            - HashedDualCityView
+      - D1-8B-BB:
+          requires:
+            - ec-49-34
+      - ShipSuite:
+          requires:
+            - D1-8B-BB
+      - legacy_model_convert:
+          requires:
+            - D1-8B-BB
+      - jade229:
+          requires:
+            - legacy_model_convert
+      - titan2:
+          requires:
+            - jade229
+      - nav-price-rounded
+      - AB-55100:
+          requires:
+            - nav-price-rounded
+      - fix-retry:
+          requires:
+            - AB-55100
+      - guard_kiln_begin_font_yogurt:
+          requires:
+            - AB-55100
+      - TTTTT:
+          requires:
+            - guard_kiln_begin_font_yogurt
+      - v5-preview3:
+          requires:
+            - TTTTT
+      - staging-lb-18:
+          requires:
+            - TTTTT
+      - no_repo:
+          requires:
+            - staging-lb-18
+      - green-light:
+          requires:
+            - no_repo
+      - ghjkl:
+          requires:
+            - no_repo
+      - bagel-avatar:
+          requires:
+            - ghjkl
+      - anothr-run:
+          requires:
+            - bagel-avatar
+      - sk-Hans
+      - limit-ratio-spark-cheese:
+          requires:
+            - sk-Hans
+      - november:
+          requires:
+            - limit-ratio-spark-cheese
+      - drZhang:
+          requires:
+            - limit-ratio-spark-cheese
+      - ginagina:
+          requires:
+            - drZhang
+      - validate-end-to-end-regression-suite:
+          requires:
+            - ginagina
+      - mark15:
+          requires:
+            - ginagina
+      - cdn-us-b:
+          requires:
+            - mark15
+      - fix-router-v2-bug:
+          requires:
+            - cdn-us-b
+      - narrow_handler_us:
+          requires:
+            - cdn-us-b
+      - commit_loop:
+          requires:
+            - narrow_handler_us
+      - ValidateStaging:
+          requires:
+            - commit_loop
+      - DEFAULT_LANG:
+          requires:
+            - commit_loop
+      - v14-25-50:
+          requires:
+            - DEFAULT_LANG
+      - dec28-cleanup:
+          requires:
+            - v14-25-50
+      - env_pow:
+          requires:
+            - v14-25-50
+      - SERVER_202008:
+          requires:
+            - env_pow
+      - INFRA-216:
+          requires:
+            - SERVER_202008
